@@ -1,0 +1,24 @@
+{
+  "name": "messages",
+  "version": "1.0.0",
+  "description": "A Node.js app for teacher-student interaction",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cynicaldevil/messages.git"
+  },
+  "author": "Nikhil Shagrithaya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cynicaldevil/messages/issues"
+  },
+  "homepage": "https://github.com/cynicaldevil/messages#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "nodemon": "^1.11.0"
+  }
+}
