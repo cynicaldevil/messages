@@ -3,6 +3,8 @@ var app = express();
 
 app.set('view engine', 'ejs');
 
+app.use('/styles', express.static('styles'));
+
 app.get('/', function (req, res) {
   res.render('index');
 });
