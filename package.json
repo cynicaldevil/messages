@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cynicaldevil/messages#readme",
   "dependencies": {
+    "ejs": "^2.5.5",
     "express": "^4.14.0",
     "nodemon": "^1.11.0",
     "pug": "^2.0.0-beta6"
