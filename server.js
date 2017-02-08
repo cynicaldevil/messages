@@ -2,6 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var fs = require('fs');
+var User = require('models/user');
 
 // express setup
 var app = express();
