@@ -9,6 +9,8 @@ var mongoose = require('mongoose');
 var app = express();
 app.set('view engine', 'ejs');
 app.use('/styles', express.static('styles'));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // mongodb setup
 const mongodb_url='mongodb://cynicaldevil:nikhils96@ds143539.mlab.com:43539/messages';
@@ -29,17 +31,28 @@ passport.use(new GoogleStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
 
-       User.findOne({ email_id: profile.id }, function (err, user) {
-          if(err) {
-            console.log(err)
-            return done(err, null);
-          }
-          else {
-             return done(err, user);
-          }
-       });
+    console.log(profile)
+    User.findOne({ google_id: profile.id }, function (err, user) {
+        if(err) {
+          console.log(err)
+          return done(err, null);
+        }
+       else if(user!= null) {
+          return done(null, user);
+       }
+    });
   }
 ));
+passport.serializeUser(function(user, done) {
+    console.log('USER SER: ',user.id);
+    done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+    User.findOne({ google_id: id }, function(err, user) {
+        console.log('USER DESER', user);
+        done(err, user);
+    });
+});
 
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
