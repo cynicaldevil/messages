@@ -2,12 +2,23 @@ var express = require('express');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var fs = require('fs');
-var User = require('models/user');
+var User = require('./models/user');
+var mongoose = require('mongoose');
 
 // express setup
 var app = express();
 app.set('view engine', 'ejs');
 app.use('/styles', express.static('styles'));
+
+// mongodb setup
+const mongodb_url='mongodb://cynicaldevil:nikhils96@ds143539.mlab.com:43539/messages';
+mongoose.connect(mongodb_url).then((err)=> {
+    if(err) {
+      console.log(err);
+    } else {
+      console.log('success!');
+    }
+  });
 
 // passport setup
 var oauth_data = JSON.parse(fs.readFileSync('./oauth_client_data.json')).web;

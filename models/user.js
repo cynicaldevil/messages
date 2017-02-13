@@ -1,10 +1,5 @@
 var mongoose = require('mongoose');
-
-const mongodb_url='mongodb://<dbuser>:<dbpassword>@ds143539.mlab.com:43539/messages';
-mongoose.connect(mongodb_url);
-
 var Schema = mongoose.Schema;
-
 
 var userSchema = new Schema({
   username: { type: String, required: true, unique: true },
