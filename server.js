@@ -25,11 +25,18 @@ var oauth_data = JSON.parse(fs.readFileSync('./oauth_client_data.json')).web;
 passport.use(new GoogleStrategy({
     clientID: oauth_data.client_id,
     clientSecret: oauth_data.client_secret,
-    callbackURL: "https://localhost:8080/oauth2callback"
+    callbackURL: "http://localhost:8080/oauth2callback"
   },
   function(accessToken, refreshToken, profile, done) {
-       User.findOrCreate({ googleId: profile.id }, function (err, user) {
-         return done(err, user);
+
+       User.findOne({ email_id: profile.id }, function (err, user) {
+          if(err) {
+            console.log(err)
+            return done(err, null);
+          }
+          else {
+             return done(err, user);
+          }
        });
   }
 ));
@@ -38,8 +45,8 @@ app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
 );
 
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
+app.get('/oauth2callback',
+    passport.authenticate('google', { failureRedirect: '/' }),
         function(req, res) {
             res.redirect('/');
         }
