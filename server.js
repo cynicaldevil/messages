@@ -1,8 +1,5 @@
 var express = require('express');
 var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var fs = require('fs');
-var User = require('./models/user');
 var mongoose = require('mongoose');
 
 // express setup
@@ -22,37 +19,8 @@ mongoose.connect(mongodb_url).then((err)=> {
     }
   });
 
-// passport setup
-var oauth_data = JSON.parse(fs.readFileSync('./oauth_client_data.json')).web;
-passport.use(new GoogleStrategy({
-    clientID: oauth_data.client_id,
-    clientSecret: oauth_data.client_secret,
-    callbackURL: "http://localhost:8080/oauth2callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-
-    console.log(profile)
-    User.findOne({ google_id: profile.id }, function (err, user) {
-        if(err) {
-          console.log(err)
-          return done(err, null);
-        }
-       else if(user!= null) {
-          return done(null, user);
-       }
-    });
-  }
-));
-passport.serializeUser(function(user, done) {
-    console.log('USER SER: ',user.id);
-    done(null, user.id);
-});
-passport.deserializeUser(function(id, done) {
-    User.findOne({ google_id: id }, function(err, user) {
-        console.log('USER DESER', user);
-        done(err, user);
-    });
-});
+// pass passport for config
+require('./config/passport.js')(passport);
 
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
