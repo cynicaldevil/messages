@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var passport = require('passport');
 var mongoose = require('mongoose');
 
@@ -8,6 +9,8 @@ app.set('view engine', 'ejs');
 app.use('/styles', express.static('styles'));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // mongodb setup
 const mongodb_url='mongodb://cynicaldevil:nikhils96@ds143539.mlab.com:43539/messages';
@@ -35,6 +38,16 @@ app.get('/oauth2callback',
 
 app.get('/', function (req, res) {
   res.render('index');
+});
+
+app.get('/cancel', function (req, res) {
+  res.render('cancel');
+});
+
+app.post('/cancel', function (req, res) {
+  console.log(req.body);
+  res.data = "OK";
+  res.send("OK");
 });
 
 app.listen(8080, function () {

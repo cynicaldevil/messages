@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A Node.js app for teacher-student interaction.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Messages</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <style>
+    .demo-layout-transparent {
+      background: url('http://i.imgur.com/wt4NRqA.jpg') center / cover;
+    }
+    .date-header {
+      color: white;
+    }
+    .mdl-layout__content {
+      padding-bottom: 100px;
+    }
+    #cancel-class {
+      background-color: #A30B0B;
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    .checkboxes {
+      border: 1px solid black;
+/*      width: 500px;
+      height: 100px;*/
+      margin-left: 10%;
+      color: white;
+    }
+    </style>
+  </head>
+  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="demo-layout-transparent mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header style="color: white;" class="mdl-layout__header mdl-layout__header--transparent">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">Messages</span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          <a href="/">
+          <button style="color: white; margin-right: 30px;" id="lower-right"
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            Back to main page
+          </button>
+          </a>
+          <button style="color: white;" id="demo-menu-lower-right"
+                  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+            Classes
+          </button>
+
+          <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+              for="demo-menu-lower-right">
+            <li class="mdl-menu__item">TOC</li>
+            <li class="mdl-menu__item">M II</li>
+            <li class="mdl-menu__item">COP</li>
+          </ul>
+          <a class="mdl-navigation__link" href="/auth/google">
+          <button style="color: white;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+              Sign in
+            </button>
+        </a>
+        </nav>
+      </div>
+    </header>
+
+      <main class="mdl-layout__content">
+      <div class="checkboxes">
+        <h5>Please fill in the details:</h5>
+        <div>
+          <div>
+            <h4>Subject:</h4>
+            <select id="subject">
+              <option value="M III">M III</option>
+              <option value="TOC">TOC</option>
+            </select>
+          </div>
+          <h4>Type:</h4>
+          <input type="radio" name="cancel_reason" value="cancel" checked>Cancel Class<br>
+          <input type="radio" name="cancel_reason" value="postpone"> Postpone<br>
+          <div id="postpone_new_date" style="height: 20px; width: 20px; background-color: yellow; display: none;"></div>
+          <h5>Reason:</h5>
+          <textarea id="reason"></textarea><br />
+          <button id="submit" class="mdl-button mdl-js-button mdl-button--raised">Submit!</button>
+        </div>
+      </div>
+      </main>
+    </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script>
+      window.onload = () => {
+        var radios = document.getElementsByName("cancel_reason");
+        for(var i = 0, max = radios.length; i < max; i++) {
+            radios[i].onclick = function() {
+                if(this.value === "postpone") {
+                  document.getElementById("postpone_new_date").style.display = "block";
+                }
+                else {
+                  document.getElementById("postpone_new_date").style.display = "none";
+                }
+            }
+        }
+
+        $("#submit").click(() => {
+          var subject = document.getElementById('subject');
+          var radios = document.getElementsByName("cancel_reason");
+          var cancel_value;
+          for(var i = 0, max = radios.length; i < max; i++) {
+            if(radios[i].checked) {
+              cancel_value = radios[i].value;
+            }
+          }
+
+          var reason_value = document.getElementById("reason").value;
+
+          $.ajax({
+            url: "/cancel",
+            data: {
+              reason: reason_value,
+              cancel: cancel_value,
+              subject: subject.value,
+            },
+            success: (result) => {
+              console.log("SUCCESS!", result);
+            },
+            type: 'POST'
+          });
+        });
+
+      };
+    </script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </body>
+</html>
