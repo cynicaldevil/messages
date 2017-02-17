@@ -3,10 +3,13 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var mongoose = require('mongoose');
 
+var Cancel = require('./models/cancel');
+
 // express setup
 var app = express();
 app.set('view engine', 'ejs');
 app.use('/styles', express.static('styles'));
+app.use('/js', express.static('js'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json()); // support json encoded bodies
@@ -45,9 +48,32 @@ app.get('/cancel', function (req, res) {
 });
 
 app.post('/cancel', function (req, res) {
-  console.log(req.body);
-  res.data = "OK";
-  res.send("OK");
+  var result_str;
+  var success = true;
+  for(var key in req.body){
+     if(req.body[key] === '') {
+      success = false;
+     }
+  }
+  if(success) {
+    var newCancel = new Cancel({
+      date: req.body.date,
+      subject: req.body.subject,
+      type: req.body.type,
+      reason: req.body.reason,
+    });
+
+    newCancel.save((err, new_cancel) => {
+      if(err) {
+        throw err;
+      }
+      console.log('New Class Cancelled!', new_cancel);
+    });
+    result_str = "Submitted Successfully!";
+  } else {
+    result_str = "Please fill all the fields!";
+  }
+  res.send(result_str);
 });
 
 app.listen(8080, function () {
