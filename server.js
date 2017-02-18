@@ -76,6 +76,10 @@ app.post('/cancel', function (req, res) {
   res.send(result_str);
 });
 
+app.get('/pending', (req, res) => {
+  res.render('pending');
+});
+
 app.listen(8080, function () {
   console.log('Messages listening on port 8080!');
 });
