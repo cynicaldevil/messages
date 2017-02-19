@@ -54,6 +54,9 @@
       display: flex;
       justify-content: space-around;
     }
+    .cancel-info-p {
+      text-transform: uppercase;
+    }
     </style>
   </head>
   <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
@@ -110,7 +113,12 @@
               </div>
               <div>
                 <h4>Status</h4>
-                <p class="cancel-info-p"><%= data[i].status %></p>
+                <% if(data[i].status === 'approved') { %>
+                  <p style="color: green;" class="cancel-info-p"><%= data[i].status %></p>
+                <% } %>
+                <% if(data[i].status === 'not approved') { %>
+                  <p style="color: red;" class="cancel-info-p"><%= data[i].status %></p>
+                <% } %>
               </div>
               </div>
               <p><h4>Reason</h4>
