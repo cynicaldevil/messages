@@ -77,7 +77,27 @@ app.post('/cancel', function (req, res) {
 });
 
 app.get('/pending', (req, res) => {
-  res.render('pending');
+    let data_ = {
+        data: [
+        {
+            date: '01/10/2017',
+            subject: 'TOC',
+            type: 'postpone',
+            reason: 'no reason at all!',
+        },
+        {
+            date: '01/10/2017',
+            subject: 'TOC',
+            type: 'postpone',
+            reason: 'no reason at all!',
+        },
+        ]
+    }
+    res.render('pending', data_);
+});
+
+app.get('/approved', (req, res) => {
+  res.render('approved');
 });
 
 app.listen(8080, function () {

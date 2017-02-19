@@ -91,28 +91,30 @@
 
       <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="overview">
+          <% for(var i = 0; i < data.length; i++) {%>
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="custom-cancel mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
               <div class="mdl-card__supporting-text">
                 <div class="cancel-info">
                 <div>
                   <h4>Date</h4>
-                  <p class="cancel-info-p">02/08/2017</p>
+                  <p class="cancel-info-p"><%= data[i].date %></p>
                 </div>
                 <div>
                   <h4>Subject</h4>
-                  <p class="cancel-info-p">TOC</p>
+                  <p class="cancel-info-p"><%= data[i].subject %></p>
                 </div>
                 <div>
                   <h4>Type</h4>
-                  <p class="cancel-info-p">Postpone</p>
+                  <p class="cancel-info-p"><%= data[i].type %></p>
                 </div>
                 </div>
                 <p><h4>Reason</h4>
-                No reason at all!</p>
+                <%= data[i].reason %></p>
               </div>
             </div>
           </section>
+          <% } %>
       </main>
     </div>
     <a href="/cancel" id="cancel-class" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored mdl-color-text--accent-contrast">Cancel a class</a>
