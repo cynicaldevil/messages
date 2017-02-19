@@ -77,23 +77,17 @@ app.post('/cancel', function (req, res) {
 });
 
 app.get('/pending', (req, res) => {
-    let data_ = {
-        data: [
-        {
-            date: '01/10/2017',
-            subject: 'TOC',
-            type: 'postpone',
-            reason: 'no reason at all!',
-        },
-        {
-            date: '01/10/2017',
-            subject: 'TOC',
-            type: 'postpone',
-            reason: 'no reason at all!',
-        },
-        ]
-    }
-    res.render('pending', data_);
+    Cancel.find({}, (err, cancels) => {
+        let data_ = cancels.map((cancel, index) => {
+            return {
+                date: cancel.date,
+                subject: cancel.subject,
+                type: cancel.type,
+                reason: cancel.reason
+            };
+        })
+        res.render('pending', { data: data_ });
+    });
 });
 
 app.get('/approved', (req, res) => {
