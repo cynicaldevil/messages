@@ -92,7 +92,18 @@ app.get('/pending', (req, res) => {
 });
 
 app.get('/approved', (req, res) => {
-  res.render('approved');
+    Cancel.find({$or: [{ status: 'approved' }, { status: 'not approved'}]}).exec((err, cancels) => {
+        let data_ = cancels.map((cancel, index) => {
+            return {
+                date: cancel.date,
+                subject: cancel.subject,
+                type: cancel.type,
+                reason: cancel.reason,
+                status: cancel.status,
+            };
+        })
+        res.render('approved', { data: data_ });
+    });
 });
 
 app.listen(8080, function () {
