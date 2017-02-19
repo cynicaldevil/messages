@@ -61,13 +61,14 @@ app.post('/cancel', function (req, res) {
       subject: req.body.subject,
       type: req.body.type,
       reason: req.body.reason,
+      status: 'pending',
     });
 
     newCancel.save((err, new_cancel) => {
       if(err) {
         throw err;
       }
-      console.log('New Class Cancelled!', new_cancel);
+      console.log('New (potential) Class Cancelled!', new_cancel);
     });
     result_str = "Submitted Successfully!";
   } else {
@@ -77,7 +78,7 @@ app.post('/cancel', function (req, res) {
 });
 
 app.get('/pending', (req, res) => {
-    Cancel.find({}, (err, cancels) => {
+    Cancel.find({status: 'pending'}, (err, cancels) => {
         let data_ = cancels.map((cancel, index) => {
             return {
                 date: cancel.date,

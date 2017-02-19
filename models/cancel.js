@@ -6,6 +6,7 @@ var cancelSchema = new Schema({
   subject: { type: String, required: true },
   type: { type: String, required: true },
   reason: { type: String, required: true },
+  status: { type: String, required: true },
 }, { timestamps: { createdAt: 'created_at',
                    updatedAt: 'updated_at'
                   }
