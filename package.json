@@ -19,8 +19,10 @@
   "homepage": "https://github.com/cynicaldevil/messages#readme",
   "dependencies": {
     "body-parser": "^1.16.1",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
+    "express-session": "^1.15.1",
     "mongodb": "^2.2.22",
     "mongoose": "^4.8.1",
     "nodemon": "^1.11.0",

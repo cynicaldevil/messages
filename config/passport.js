@@ -8,12 +8,12 @@ module.exports = (passport) => {
 
     passport.serializeUser(function(user, done) {
         console.log('USER SER: ',user.id);
-        done(null, user.id);
+        done(null, user.google_id);
     });
     passport.deserializeUser(function(id, done) {
         User.findOne({ google_id: id }, function(err, user) {
             console.log('USER DESER', user);
-            done(err, user);
+            done(null, user);
         });
     });
 
