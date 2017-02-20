@@ -47,8 +47,19 @@ app.get('/oauth2callback',
         }
 );
 
-app.get('/', function (req, res) {
-  res.render('index');
+app.get('/', (req, res) => {
+    Cancel.find({ status: 'approved' }).exec((err, cancels) => {
+        let data_ = cancels.map((cancel, index) => {
+            return {
+                date: cancel.date,
+                subject: cancel.subject,
+                type: cancel.type,
+                reason: cancel.reason,
+                status: cancel.status,
+            };
+        })
+        res.render('index', { data: data_});
+    });
 });
 
 app.get('/cancel', function (req, res) {

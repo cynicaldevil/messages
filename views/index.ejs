@@ -83,45 +83,21 @@
 
       <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="overview">
-        <div class="date-header">
-            <h2>30th Dec</h2>
+          <% for(var i = 0; i < data.length; i++) {%>
+          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+              <div class="mdl-card__supporting-text">
+                <h4>Class Cancelled</h4>
+                The lecture for <b><%= data[i].subject %></b> has been cancelled on <b><%= data[i].date %></b>
+              </div>
+              <div class="mdl-card__actions">
+                <a href="#" class="mdl-button">Add a comment...</a>
+              </div>
+            </div>
+          </section>
+          </section>
+          <% } %>
         </div>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-              <div class="mdl-card__supporting-text">
-                <h4>Class postponed to Jan 2nd</h4>
-                I won't be able to take today's class as I have some urgent work coming up. Hence, I've postponed the class to next week.
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Add a comment...</a>
-              </div>
-            </div>
-          </section>
-        <div class="date-header">
-            <h2>28th Dec</h2>
-        </div>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-              <div class="mdl-card__supporting-text">
-                <h4>Reading material</h4>
-                PFA list of new reading material
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Add a comment...</a>
-              </div>
-            </div>
-          </section>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-              <div class="mdl-card__supporting-text">
-                <h4>Grading criteria</h4>
-                The revised grading criteria is as follows:
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Add a comment...</a>
-              </div>
-            </div>
-          </section>
       </main>
     </div>
     <a href="/cancel" id="cancel-class" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored mdl-color-text--accent-contrast">Cancel a class</a>
