@@ -36,6 +36,11 @@ require('./config/passport.js')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/pending');
+};
+
 app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
 );
@@ -109,11 +114,6 @@ app.get('/pending', (req, res) => {
         res.render('pending', { data: data_ });
     });
 });
-
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next(); }
-  res.redirect('/pending');
-};
 
 app.get('/approved', ensureAuthenticated, (req, res) => {
     console.log(req.user,req._passport)
