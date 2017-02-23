@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
   google_id: { type: String, required: true, unique: true },
-  admin: Boolean,
+  admin_level: { type: Number, required: true },
 }, { timestamps: { createdAt: 'created_at',
                    updatedAt: 'updated_at'
                   }

@@ -30,7 +30,7 @@ module.exports = (passport) => {
             } else if(user === null) {
                 var new_user=new User({
                     google_id: profile.id,
-                    admin: false
+                    admin_level: 0
                 });
                 new_user.save((err, new_user) => {
                     if (err) {
