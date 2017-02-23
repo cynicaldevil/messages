@@ -38,7 +38,7 @@ app.use(passport.session());
 
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/pending');
+  res.redirect('/');
 };
 
 app.get('/auth/google',
@@ -67,8 +67,12 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/cancel', function (req, res) {
-  res.render('cancel');
+app.get('/cancel', ensureAuthenticated, function (req, res) {
+    if(req.user.admin_level > 0) {
+        res.render('cancel');
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.post('/cancel', function (req, res) {
@@ -101,34 +105,41 @@ app.post('/cancel', function (req, res) {
   res.send(result_str);
 });
 
-app.get('/pending', (req, res) => {
-    Cancel.find({status: 'pending'}, (err, cancels) => {
-        let data_ = cancels.map((cancel, index) => {
-            return {
-                date: cancel.date,
-                subject: cancel.subject,
-                type: cancel.type,
-                reason: cancel.reason
-            };
-        })
-        res.render('pending', { data: data_ });
-    });
+app.get('/pending', ensureAuthenticated, (req, res) => {
+    if(req.user.admin_level > 0) {
+        Cancel.find({status: 'pending'}, (err, cancels) => {
+            let data_ = cancels.map((cancel, index) => {
+                return {
+                    date: cancel.date,
+                    subject: cancel.subject,
+                    type: cancel.type,
+                    reason: cancel.reason
+                };
+            })
+            res.render('pending', { data: data_ });
+        });
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.get('/approved', ensureAuthenticated, (req, res) => {
-    console.log(req.user,req._passport)
-    Cancel.find({$or: [{ status: 'approved' }, { status: 'not approved'}]}).exec((err, cancels) => {
-        let data_ = cancels.map((cancel, index) => {
-            return {
-                date: cancel.date,
-                subject: cancel.subject,
-                type: cancel.type,
-                reason: cancel.reason,
-                status: cancel.status,
-            };
-        })
-        res.render('approved', { data: data_, user: req.user });
-    });
+    if(req.user.admin_level > 0) {
+        Cancel.find({$or: [{ status: 'approved' }, { status: 'not approved'}]}).exec((err, cancels) => {
+            let data_ = cancels.map((cancel, index) => {
+                return {
+                    date: cancel.date,
+                    subject: cancel.subject,
+                    type: cancel.type,
+                    reason: cancel.reason,
+                    status: cancel.status,
+                };
+            })
+            res.render('approved', { data: data_, user: req.user });
+        });
+    } else {
+        res.redirect('/');
+    }
 });
 
 
