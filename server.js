@@ -45,9 +45,13 @@ app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
 );
 
+// embarassing global var
+let login_status = 'in';
+
 app.get('/oauth2callback',
     passport.authenticate('google', { failureRedirect: '/' }),
         function(req, res) {
+          login_status = 'out';
             res.redirect('/');
         }
 );
@@ -63,7 +67,7 @@ app.get('/', (req, res) => {
                 status: cancel.status,
             };
         })
-        res.render('index', { data: data_});
+        res.render('index', { data: data_, login_status});
     });
 });
 
