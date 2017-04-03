@@ -72,7 +72,11 @@
             </button>
             </a>
 
-            <a class="mdl-navigation__link" href="/auth/google">
+            <% if(login_status === 'in') { %>
+              <a class="mdl-navigation__link" href="/auth/google">
+            <% } else { %>
+              <a class="mdl-navigation__link" href="/logout">
+            <% } %>
                 <button style="color: white;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
                     Sign <%= login_status %>
                 </button>

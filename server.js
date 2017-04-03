@@ -73,7 +73,7 @@ app.get('/', (req, res) => {
 
 app.get('/cancel', ensureAuthenticated, function (req, res) {
     if(req.user.admin_level > 0) {
-        res.render('cancel');
+        res.render('cancel', { login_status });
     } else {
         res.redirect('/');
     }
@@ -120,7 +120,7 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
                     reason: cancel.reason
                 };
             })
-            res.render('pending', { data: data_ });
+            res.render('pending', { data: data_, login_status });
         });
     } else {
         res.redirect('/');
@@ -139,13 +139,18 @@ app.get('/approved', ensureAuthenticated, (req, res) => {
                     status: cancel.status,
                 };
             })
-            res.render('approved', { data: data_, user: req.user });
+            res.render('approved', { data: data_, user: req.user, login_status });
         });
     } else {
         res.redirect('/');
     }
 });
 
+app.get('/logout', function(req, res){
+  req.logout();
+  login_status = 'in';
+  res.redirect('/');
+});
 
 app.listen(8080, function () {
   console.log('Messages listening on port 8080!');
