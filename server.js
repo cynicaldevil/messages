@@ -67,7 +67,11 @@ app.get('/', (req, res) => {
                 status: cancel.status,
             };
         })
-        res.render('index', { data: data_, login_status});
+        let show_cancel_class = false;
+        if(req.user && req.user.admin_level === 1) {
+          show_cancel_class = true;
+        }
+        res.render('index', { data: data_, login_status, show_cancel_class });
     });
 });
 
@@ -110,7 +114,7 @@ app.post('/cancel', function (req, res) {
 });
 
 app.get('/pending', ensureAuthenticated, (req, res) => {
-    if(req.user.admin_level > 0) {
+    if(req.user && req.user.admin_level > 0) {
         Cancel.find({status: 'pending'}, (err, cancels) => {
             let data_ = cancels.map((cancel, index) => {
                 return {
@@ -120,7 +124,11 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
                     reason: cancel.reason
                 };
             })
-            res.render('pending', { data: data_, login_status });
+            let show_cancel_class = false;
+            if(req.user.admin_level === 1) {
+              show_cancel_class = true;
+            }
+            res.render('pending', { data: data_, login_status, show_cancel_class });
         });
     } else {
         res.redirect('/');
@@ -128,7 +136,7 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
 });
 
 app.get('/approved', ensureAuthenticated, (req, res) => {
-    if(req.user.admin_level > 0) {
+    if(req.user && req.user.admin_level > 0) {
         Cancel.find({$or: [{ status: 'approved' }, { status: 'not approved'}]}).exec((err, cancels) => {
             let data_ = cancels.map((cancel, index) => {
                 return {
@@ -139,7 +147,11 @@ app.get('/approved', ensureAuthenticated, (req, res) => {
                     status: cancel.status,
                 };
             })
-            res.render('approved', { data: data_, user: req.user, login_status });
+            let show_cancel_class = false;
+            if(req.user.admin_level === 1) {
+              show_cancel_class = true;
+            }
+            res.render('approved', { data: data_, user: req.user, login_status, show_cancel_class });
         });
     } else {
         res.redirect('/');
