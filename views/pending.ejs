@@ -112,11 +112,31 @@
                   <h4>Type</h4>
                   <p class="cancel-info-p"><%= data[i].type %></p>
                 </div>
+                <% if(can_approve) {%>
+                <div>
+                  <h4>Approve?</h4>
+                  <form>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for=<%= "option-1"+i%>>
+                    <input type="radio" id=<%= "option-1"+i%> class="mdl-radio__button" name="options" value="1">
+                    <span class="mdl-radio__label">Approve</span>
+                  </label>
+                  <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for=<%= "option-2"+i%>>
+                    <input type="radio" id=<%= "option-2"+i%> class="mdl-radio__button" name="options" value="2">
+                    <span class="mdl-radio__label">Disapprove</span>
+                  </label>
+                  </form>
+                </div>
+                <% } %>
                 </div>
                 <p><h4>Reason</h4>
                 <%= data[i].reason %></p>
               </div>
             </div>
+          </section>
+          <% } %>
+          <% if(can_approve) {%>
+          <section class="section--center mdl-grid mdl-grid--no-spacing">
+            <a href="#" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored mdl-color-text--accent-contrast">Submit approvals</a>
           </section>
           <% } %>
           </div>

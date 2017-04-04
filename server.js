@@ -116,7 +116,7 @@ app.post('/cancel', function (req, res) {
 app.get('/pending', ensureAuthenticated, (req, res) => {
     if(req.user && req.user.admin_level > 0) {
         Cancel.find({status: 'pending'}, (err, cancels) => {
-            let data_ = cancels.map((cancel, index) => {
+            let data = cancels.map((cancel, index) => {
                 return {
                     date: cancel.date,
                     subject: cancel.subject,
@@ -125,10 +125,16 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
                 };
             })
             let show_cancel_class = false;
+            let can_approve = false;
             if(req.user.admin_level === 1) {
               show_cancel_class = true;
+            } else if(req.user.admin_level === 2) {
+              can_approve = true;
             }
-            res.render('pending', { data: data_, login_status, show_cancel_class });
+            res.render('pending', { data,
+                                    login_status,
+                                    show_cancel_class,
+                                    can_approve });
         });
     } else {
         res.redirect('/');
