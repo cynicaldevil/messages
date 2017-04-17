@@ -141,6 +141,10 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
     }
 });
 
+app.post('pending', ensureAuthenticated, (req, res) => {
+    // console.log(req.body.);
+});
+
 app.get('/approved', ensureAuthenticated, (req, res) => {
     if(req.user && req.user.admin_level > 0) {
         Cancel.find({$or: [{ status: 'approved' }, { status: 'not approved'}]}).exec((err, cancels) => {
