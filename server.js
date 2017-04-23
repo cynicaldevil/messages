@@ -113,6 +113,8 @@ app.post('/cancel', function (req, res) {
   res.send(result_str);
 });
 
+/******************* PENDING ***************************/
+
 app.get('/pending', ensureAuthenticated, (req, res) => {
     if(req.user && req.user.admin_level > 0) {
         Cancel.find({status: 'pending'}, (err, cancels) => {
@@ -123,7 +125,7 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
                     type: cancel.type,
                     reason: cancel.reason
                 };
-            })
+            });
             let show_cancel_class = false;
             let can_approve = false;
             if(req.user.admin_level === 1) {
@@ -141,9 +143,13 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
     }
 });
 
-app.post('pending', ensureAuthenticated, (req, res) => {
-    // console.log(req.body.);
+app.post('/pending', ensureAuthenticated, (req, res) => {
+    console.log(req.body.result);
+    // console.log(req.body.result);
+    res.send('SUCCESS');
 });
+
+/******************* PENDING ***************************/
 
 app.get('/approved', ensureAuthenticated, (req, res) => {
     if(req.user && req.user.admin_level > 0) {

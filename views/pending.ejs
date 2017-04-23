@@ -102,15 +102,15 @@
                 <div class="cancel-info">
                 <div>
                   <h4>Date</h4>
-                  <p class="cancel-info-p"><%= data[i].date %></p>
+                  <p class="selecthor-date cancel-info-p"><%= data[i].date %></p>
                 </div>
                 <div>
                   <h4>Subject</h4>
-                  <p class="cancel-info-p"><%= data[i].subject %></p>
+                  <p class="selecthor-subject cancel-info-p"><%= data[i].subject %></p>
                 </div>
                 <div>
                   <h4>Type</h4>
-                  <p class="cancel-info-p"><%= data[i].type %></p>
+                  <p class="selecthor-type cancel-info-p"><%= data[i].type %></p>
                 </div>
                 <% if(can_approve) {%>
                 <div>
@@ -136,7 +136,10 @@
           <% } %>
           <% if(can_approve) {%>
           <section class="section--center mdl-grid mdl-grid--no-spacing">
-            <a href="#" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored mdl-color-text--accent-contrast" id="submit-approvals">Submit approvals</a>
+          <div>
+            <a href="#" id="submit-approvals" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored mdl-color-text--accent-contrast" id="submit-approvals">Submit approvals</a>
+
+          </div>
           </section>
           <% } %>
           </div>
@@ -150,17 +153,38 @@
       window.onload = () => {
         let result = [];
         $("#submit-approvals").click(() => {
+
+          var data_date = document.getElementsByClassName('selecthor-date');
+          var data_subject = document.getElementsByClassName('selecthor-subject');
+          var data_type = document.getElementsByClassName('selecthor-type');
+
+          console.log('DATA SUBJ: ', data_subject);
           var radios = document.getElementsByName('options');
           for(var i = 0, max = radios.length; i < max; i = i+2) {
+            console.log(i)
             const approve = radios[i].checked;
             const disapprove = radios[i+1].checked;
             if(approve | disapprove) {
-              result.push({index: i/2,
+              const index = i/2;
+              result.push({date: data_date[index].innerHTML,
+                           data_subject: data_subject[index].innerHTML,
+                           data_type: data_type[index].innerHTML,
                            status: approve ? 'approved' : 'disapproved'
               });
             }
           }
           console.log(result);
+          $.ajax({
+            url: "/pending",
+            data: {
+              result: result,
+            },
+            success: (result) => {
+              console.log(result);
+              $("<p style=\"color: #4EFF27; margin-top: 10px;\">Data submitted successfully!</p>").insertAfter("#submit-approvals");
+            },
+            type: 'POST'
+          });
         });
       };
     </script>
