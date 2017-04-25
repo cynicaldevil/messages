@@ -69,7 +69,7 @@ app.get('/', (req, res) => {
             };
         })
         let show_cancel_class = false;
-        if(req.user && req.user.admin_level === 1) {
+        if(req.user && req.user.admin_level >= 1) {
           show_cancel_class = true;
         }
         res.render('index', { data: data_, login_status, show_cancel_class });
@@ -89,6 +89,7 @@ app.get('/cancel', ensureAuthenticated, function (req, res) {
 
 app.post('/cancel', function (req, res) {
   var result_str;
+  var result;
   var success = true;
   for(var key in req.body){
      if(req.body[key] === '') {
@@ -111,10 +112,12 @@ app.post('/cancel', function (req, res) {
       console.log('New (potential) Class Cancelled!', new_cancel);
     });
     result_str = "Submitted Successfully!";
+    result = true;
   } else {
     result_str = "Please fill all the fields!";
+    result = false;
   }
-  res.send(result_str);
+  res.send({str: result_str, res: result});
 });
 
 /******************* PENDING ***************************/
@@ -135,6 +138,7 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
             if(req.user.admin_level === 1) {
               show_cancel_class = true;
             } else if(req.user.admin_level === 2) {
+              show_cancel_class = true;
               can_approve = true;
             }
             res.render('pending', { data,
@@ -190,7 +194,7 @@ app.get('/approved', ensureAuthenticated, (req, res) => {
                 };
             })
             let show_cancel_class = false;
-            if(req.user.admin_level === 1) {
+            if(req.user.admin_level >= 1) {
               show_cancel_class = true;
             }
             res.render('approved', { data: data_, user: req.user, login_status, show_cancel_class });

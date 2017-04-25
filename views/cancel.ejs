@@ -69,7 +69,7 @@
             Back to main page
           </button>
           </a>
-          <button style="color: white;" id="demo-menu-lower-right"
+<!--           <button style="color: white;" id="demo-menu-lower-right"
                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
             Classes
           </button>
@@ -79,7 +79,7 @@
             <li class="mdl-menu__item">TOC</li>
             <li class="mdl-menu__item">M II</li>
             <li class="mdl-menu__item">COP</li>
-          </ul>
+          </ul> -->
           <% if(login_status === 'in') { %>
             <a class="mdl-navigation__link" href="/auth/google">
           <% } else { %>
@@ -103,6 +103,10 @@
             <select id="subject">
               <option value="M III">M III</option>
               <option value="TOC">TOC</option>
+              <option value="COP">COP</option>
+              <option value="AD">AD</option>
+              <option value="FRENCH">FRENCH</option>
+              <option value="SWE">SWE</option>
             </select>
           </div>
           <h4>Type:</h4>
@@ -110,7 +114,7 @@
           <input type="radio" name="cancel_reason" value="postpone"> Postpone<br>
           <h5>Reason:</h5>
           <textarea id="reason"></textarea><br />
-          <button id="submit" class="mdl-button mdl-js-button mdl-button--raised">Submit!</button>
+          <button id="submit-approvals" class="mdl-button mdl-js-button mdl-button--raised">Submit!</button>
         </div>
       </div>
       </main>
@@ -126,18 +130,8 @@
           });
 
         var radios = document.getElementsByName("cancel_reason");
-        for(var i = 0, max = radios.length; i < max; i++) {
-            radios[i].onclick = function() {
-                if(this.value === "postpone") {
-                  document.getElementById("postpone_new_date").style.display = "block";
-                }
-                else {
-                  document.getElementById("postpone_new_date").style.display = "none";
-                }
-            }
-        }
 
-        $("#submit").click(() => {
+        $("#submit-approvals").click(() => {
           var subject = document.getElementById('subject');
           var radios = document.getElementsByName("cancel_reason");
           var cancel_value;
@@ -159,6 +153,9 @@
             },
             success: (result) => {
               console.log(result);
+              let color = result.res ? '#4EFF27' : '#FF2020';
+              $('#to-be-deleted').remove();
+              $(`<p id="to-be-deleted" style="color: ${color}; margin-top: 10px;">${result.str}</p>`).insertAfter("#submit-approvals");
             },
             type: 'POST'
           });
