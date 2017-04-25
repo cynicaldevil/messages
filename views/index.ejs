@@ -88,17 +88,19 @@
       <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="overview">
           <% for(var i = 0; i < data.length; i++) {%>
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+          <section style="border: 1px solid black;" class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-              <div class="mdl-card__supporting-text">
+              <div class="mdl-card__supporting-text" style="margin-bottom: 0px;">
                 <h4>Class Cancelled</h4>
-                The lecture for <b><%= data[i].subject %></b> has been cancelled on <b><%= data[i].date %></b>
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Add a comment...</a>
+                The lecture for <b><%= data[i].subject %></b>
+                 on <b><%= data[i].date %></b> has been 
+                  <% if(data[i].type === 'cancel') { %>
+                    <b>cancelled</b>
+                  <% } else if(data[i].type === 'postpone') { %>
+                    <b>postponed</b>
+                  <% } %>
               </div>
             </div>
-          </section>
           </section>
           <% } %>
         </div>
