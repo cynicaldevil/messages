@@ -148,9 +148,31 @@ app.get('/pending', ensureAuthenticated, (req, res) => {
 });
 
 app.post('/pending', ensureAuthenticated, (req, res) => {
-    console.log(req.body.result);
+    console.log(req.body.results);
+    if(req.user && req.user.admin_level > 1) {
+      req.body.results.forEach((result, index) => {
+        Cancel.findOne({date: result.date,
+                        subject: result.subject,
+                        type: result.type}, (err, cancel) => {
+          console.log('CANCEL BEFORE', cancel)
+          let status;
+          if(result.status === 'approved') {
+            status = result.status;
+          }
+          else if(result.status === 'disapproved') {
+            status = 'not approved';
+          }
+          cancel.update({status: status}, (cancel) => {
+            console.log('CANCEL AFTER: ', cancel);
+          })
+        });
+      });
+      res.send('SUCCESS');
+    }
+    else {
+      res.send('NOT AUTHORIZED!!')
+    }
     // console.log(req.body.result);
-    res.send('SUCCESS');
 });
 
 /******************* PENDING ***************************/

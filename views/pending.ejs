@@ -151,7 +151,7 @@
 
     <script type="text/javascript">
       window.onload = () => {
-        let result = [];
+        let results = [];
         $("#submit-approvals").click(() => {
 
           var data_date = document.getElementsByClassName('selecthor-date');
@@ -166,18 +166,18 @@
             const disapprove = radios[i+1].checked;
             if(approve | disapprove) {
               const index = i/2;
-              result.push({date: data_date[index].innerHTML,
-                           data_subject: data_subject[index].innerHTML,
-                           data_type: data_type[index].innerHTML,
+              results.push({date: data_date[index].innerHTML,
+                           subject: data_subject[index].innerHTML,
+                           type: data_type[index].innerHTML,
                            status: approve ? 'approved' : 'disapproved'
               });
             }
           }
-          console.log(result);
+          console.log(results);
           $.ajax({
             url: "/pending",
             data: {
-              result: result,
+              results: results,
             },
             success: (result) => {
               console.log(result);
