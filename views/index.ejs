@@ -86,6 +86,7 @@
     </header>
 
       <main class="mdl-layout__content">
+      <% if(login_status === 'out') { %>
         <div class="mdl-layout__tab-panel is-active" id="overview">
           <% for(var i = 0; i < data.length; i++) {%>
           <section style="border: 1px solid black;" class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
@@ -104,6 +105,9 @@
           </section>
           <% } %>
         </div>
+      <% } else if(login_status === 'in') { %>
+        <p>Login to see cancelled classes!</p>
+      <% } %>
       </main>
     </div>
     <% if(show_cancel_class) {%>

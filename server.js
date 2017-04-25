@@ -57,6 +57,7 @@ app.get('/oauth2callback',
 );
 
 app.get('/', (req, res) => {
+  if(req.user) {
     Cancel.find({ status: 'approved' }).exec((err, cancels) => {
         let data_ = cancels.map((cancel, index) => {
             return {
@@ -73,6 +74,9 @@ app.get('/', (req, res) => {
         }
         res.render('index', { data: data_, login_status, show_cancel_class });
     });
+  } else {
+    res.render('index', {login_status, show_cancel_class: false});
+  }
 });
 
 app.get('/cancel', ensureAuthenticated, function (req, res) {
